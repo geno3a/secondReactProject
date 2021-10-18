@@ -1,5 +1,6 @@
 import React from 'react';
 import { StyleSheet, Text, View, Animated } from 'react-native';
+import * as Location from 'expo-location'
 
 
 import { API_KEY } from './utils/WeatherAPIKey';
@@ -15,6 +16,7 @@ export default class App extends React.Component {
   };
 
   componentDidMount() {
+    Location.installWebGeolocationPolyfill()
     navigator.geolocation.getCurrentPosition(
       position => {
         this.fetchWeather(position.coords.latitude, position.coords.longitude);
@@ -51,7 +53,7 @@ export default class App extends React.Component {
             <Text style={styles.loadingText}>Fetching The Weather</Text>
           </View>
         ) : (
-          <Weather weather={weatherCondition} temperature={temperature} />
+          <Weather weather={weatherCondition} temperature={Math.round(temperature)} />
         )}
       </View>
     );
